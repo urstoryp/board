@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Repository
 public class UserDao {
     private final NamedParameterJdbcTemplate jdbcTemplate;
-    private SimpleJdbcInsertOperations insertUser;
+    private final SimpleJdbcInsertOperations insertUser;
 
     public UserDao(DataSource dataSource){
         jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);

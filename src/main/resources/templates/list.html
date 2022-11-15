@@ -18,7 +18,7 @@
     <div class="login-info">
         <div class="container">
           <span class="login-info_user" th:if="${loginInfo != null}">
-            <span>김성박</span>
+            <span th:text="${loginInfo.name}"></span>
           </span>
             <span class="login-info_logout" th:if="${loginInfo != null}">
             <a href="/logout">로그아웃</a>
@@ -41,42 +41,27 @@
                     <th scope="col" class="th-num">번호</th>
                     <th scope="col" class="th-title">제목</th>
                     <th scope="col" class="th-viewcnt">조회수</th>
+                    <th scope="col" class="th-name">작성자</th>
                     <th scope="col" class="th-date">등록일</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>3</td>
+                <tr th:each="board : ${list}">
+                    <td th:text="${board.boardId}"></td>
                     <th>
-                        <a href="/board?id=3">제목1</a>
-                        <p>테스트</p>
+                        <a href="/board?id=3" th:text="${board.title}"></a>
                     </th>
-                    <td>1</td>
-                    <td>2017.07.13</td>
+                    <td th:text="${board.viewCnt}"></td>
+                    <td th:text="${board.name}"></td>
+                    <td th:text="${board.regdate}"></td>
                 </tr>
 
-                <tr>
-                    <td>2</td>
-                    <th>
-                        <a href="/board?id=2">제목2</a>
-                    </th>
-                    <td>0</td>
-                    <td>2017.06.15</td>
-                </tr>
-
-                <tr>
-                    <td>1</td>
-                    <th>
-                        <a href="/board?id=1">제목3</a>
-                    </th>
-                    <td>1</td>
-                    <td>2017.06.15</td>
-                </tr>
                 </tbody>
             </table>
         </div>
         <div>
-            <a href="/writeForm">글쓰기</a>
+            <a href="/writeForm" th:if="${loginInfo != null}">글쓰기</a>
+            <span th:if="${loginInfo == null}">글쓰기</span>
         </div>
     </div>
 </section>
