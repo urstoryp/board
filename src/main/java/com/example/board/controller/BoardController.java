@@ -25,12 +25,11 @@ public class BoardController {
     // list를 리턴한다는 것은
     // classpath:/templates/list.html
     @GetMapping("/")
-    public String list(HttpSession session, Model model){ // HttpSession, Model은 Spring이 자동으로 넣어준다.
+    public String list(@RequestParam(name="page", defaultValue = "1") int page, HttpSession session, Model model){ // HttpSession, Model은 Spring이 자동으로 넣어준다.
         // 게시물 목록을 읽어온다. 페이징 처리한다.
         LoginInfo loginInfo = (LoginInfo)session.getAttribute("loginInfo");
         model.addAttribute("loginInfo", loginInfo); // 템플릿에게
 
-        int page = 1;
         int totalCount = boardService.getTotalCount(); // 11
         List<Board> list = boardService.getBoards(page); // page가 1,2,3,4 ....
         int pageCount = totalCount / 10; // 1
@@ -52,12 +51,11 @@ public class BoardController {
     // /board?id=2
     // /board?id=1
     @GetMapping("/board")
-    public String board(@RequestParam("id") int id){
-        System.out.println("id : " + id);
+    public String board(@RequestParam("boardId") int boardId, Model model){
+        System.out.println("boardId : " + boardId);
 
-        // id에 해당하는 게시물을 읽어온다.
-        // id에 해당하는 게시물의 조회수도 1증가한다.
-
+        Board board = boardService.getBoard(boardId);
+        model.addAttribute("board", board);
         return "board";
     }
 
@@ -94,6 +92,22 @@ public class BoardController {
         // 로그인 한 회원 정보 + 제목, 내용을 저장한다.System.out.println("content : " + content);
 
         boardService.addBoard(loginInfo.getUserId(), title, content);
+
+        return "redirect:/"; // 리스트 보기로 리다이렉트한다.
+    }
+
+    @GetMapping("/delete")
+    public String delete(
+            @RequestParam("boardId") int boardId,
+            HttpSession session
+    ) {
+        LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
+        if (loginInfo == null) { // 세션에 로그인 정보가 없으면 /loginform으로 redirect
+            return "redirect:/loginform";
+        }
+
+        // loginInfo.getUserId() 사용자가 쓴 글일 경우에만 삭제한다.
+        boardService.deleteBoard(loginInfo.getUserId(), boardId);
 
         return "redirect:/"; // 리스트 보기로 리다이렉트한다.
     }
