@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>수정 폼</title>
+</head>
+<body>
+<H1>글수정 폼</H1>
+<form action="/update" method="post">
+    <input type="hidden" name="boardId" th:value="${board.boardId}" />
+    이름 : <span th:text="${loginInfo.name}"></span><br>
+    제목 : <input type="text" name="title" th:value="${board.title}"/><br />
+    내용 : <br>
+    <textarea name="content" cols="50" rows="5" th:text="${board.content}"></textarea><br>
+    <input type="submit" value="수정" />
+</form>
+</body>
+</html>

@@ -9,13 +9,14 @@
 <body>
 <H1 th:text="${board.title}"></H1>
 <div>글쓴이 : <span th:text="${board.name}"></span></div>
+<div>제목 : <span th:text="${board.title}"></span></div>
 <div>조회수 : <span th:text="${board.viewCnt}"></span></div>
 <div>작성일 : <span th:text="${board.regdate}"></span></div>
 <div>내용 : <span th:text="${board.content}"></span></div>
 
 <div><a href="/">목록보기</a></div>
 <!-- 로그인하지 않은 상황이라면 수정하기, 삭제하기 링크가 비활성화. 로그인한 사용자가 쓴 글인가? -->
-<div><a href="/">수정하기</a></div>
+<div><a th:href="@{/updateform(boardId=${board.boardId})}">수정하기</a></div>
 <div><a th:href="@{/delete(boardId=${board.boardId})}">삭제하기</a></div>
 </body>
 </html>
